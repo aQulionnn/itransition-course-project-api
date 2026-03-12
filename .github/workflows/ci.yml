@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with: 
+          dotnet-version: '10.x'
+
+      - name: Publish API to Output Directory
+        run: dotnet publish ./ItransitionCourseProject.Api/ItransitionCourseProject.Api.csproj -c Release -o build-output
+
+      - name: Azure Authentication
+        uses: azure/login@v2
+        with: 
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id:  ${{ vars.AZURE_TENANT_ID }}
+          subscription-id:  ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Poland-Central Production
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'app-itransition-course-project-prod-plc-001'
+          slot-name: 'production'
+          package: './build-output'
+
+      - name: Deployto France-Central Production 
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'app-itransition-course-project-prod-frc-001'
+          slot-name: 'production'
+          package: './build-output'
