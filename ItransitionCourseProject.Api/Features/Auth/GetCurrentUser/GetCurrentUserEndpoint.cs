@@ -28,6 +28,6 @@ public class GetCurrentUserEndpoint : ICarterModule
                 user.Email,
                 IsAdmin = roles.Contains("Admin")
             });
-        });
+        }).WithTags("Auth");
     }
 }

@@ -12,6 +12,6 @@ public class LogoutEndpoint : ICarterModule
         {
             await signInManager.SignOutAsync();
             return Results.Ok();
-        });
+        }).WithTags("Auth");
     }
 }

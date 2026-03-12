@@ -18,41 +18,38 @@ public class GetInventoryByIdEndpoint : ICarterModule
             var isAdmin = ctx.User.IsInRole("Admin");
 
             var inventory = await db.Inventories
-                .Include(i => i.Creator)
-                .Include(i => i.Category)
-                .Include(i => i.Items)
-                .Include(i => i.InventoryTags)
-                .ThenInclude(t => t.Tag)
-                .Include(i => i.InventoryFields)
+                .AsNoTracking()
+                .Where(i => i.Id == id)
                 .Where(i =>
                     isAdmin ||
                     i.IsPublic ||
                     i.CreatorId == userId ||
                     i.InventoryAccesses.Any(a => a.UserId == userId))
-                .FirstOrDefaultAsync(i => i.Id == id);
+                .Select(i => new GetInventoryByIdResponse(
+                    i.Id,
+                    i.Title,
+                    i.Description,
+                    i.ImageUrl,
+                    i.IsPublic,
+                    i.CreatorId,
+                    i.Creator.UserName!,
+                    i.Category.Name,
+                    i.Items.Count(),
+                    i.InventoryTags.Select(t => t.Tag.Name).ToList(),
+                    i.InventoryFields.Select(f => new InventoryFieldResponse(
+                        f.Id,
+                        f.Title,
+                        f.Description,
+                        f.Type.ToString(),
+                        f.IsDisplayed
+                    )).ToList()
+                ))
+                .FirstOrDefaultAsync();
 
             if (inventory is null)
                 return Results.NotFound();
 
-            return Results.Ok(new GetInventoryByIdResponse(
-                inventory.Id,
-                inventory.Title,
-                inventory.Description,
-                inventory.ImageUrl,
-                inventory.IsPublic,
-                inventory.CreatorId,
-                inventory.Creator.UserName!,
-                inventory.Category.Name,
-                inventory.Items.Count(),
-                inventory.InventoryTags.Select(t => t.Tag.Name).ToList(),
-                inventory.InventoryFields.Select(f => new InventoryFieldResponse(
-                    f.Id,
-                    f.Title,
-                    f.Description,
-                    f.Type.ToString(),
-                    f.IsDisplayed
-                )).ToList()
-            ));
+            return Results.Ok(inventory);
         }).AllowAnonymous().WithTags("Inventories");
     }
 }

@@ -23,7 +23,7 @@ public class GoogleLoginEndpoint : ICarterModule
                 linkGenerator.GetPathByName(context, "GoogleLoginCallback") + $"?returnUrl={returnUrl}");
 
             return Results.Challenge(props, ["Google"]);
-        }).AllowAnonymous();
+        }).WithTags("Auth").AllowAnonymous();
 
         app.MapGet("/api/auth/google-callback", async ([FromQuery] string returnUrl,
                 HttpContext context,
@@ -62,6 +62,7 @@ public class GoogleLoginEndpoint : ICarterModule
 
                 return Results.Redirect(returnUrl);
             })
+            .WithTags("Auth")
             .WithName("GoogleLoginCallback")
             .AllowAnonymous();
     }

@@ -27,7 +27,6 @@ public class RegisterEndpoint : ICarterModule
                 return Results.BadRequest(result.Errors);
 
             await userManager.AddToRoleAsync(user, "User");
-            await userManager.AddToRoleAsync(user, "Admin");
 
             return Results.Ok();
         }).AllowAnonymous().WithTags("Auth");

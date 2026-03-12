@@ -71,7 +71,7 @@ app.MapScalarApiReference("/scalar", options =>
             flow =>
             {
                 flow.Token =
-                    "CfDJ8DNoxjbbLI5MpNKLIgUgqrXeGTNxkDi6JWAJEncSBtyJqyXtqaawfcU7_jJX1-PMCNCCyHbIfwxevYcQ1gOA6sdSyMycYjytto5kM-qQCKWRNjWr4hG6udvk7nMnNU3k1sycIe8Ik1vKv4JwItukxZ7QhJ-U9GezAziHxPZDcHao5y_XJHGsITcZQBB09-cFha-rKt45gK_Uu7wTv-Y_46nhr5xtuVzeWGVlkLwDCqt8qO47FIBPEmczTYKfViJj31gijj6DofaJwkU3lEnWnoeceDWr23D2qfUV8qLLIYHbyJ5XeZiXDgf4lJcHe8aouPwlcQqW73YgfbWE9zKuadsh41U5GoFib0hK1MUHUw2kl37GOuG0bFR3WJhe0sYfFbMDhHEcM2oEPwakXE4wi7Qe7Br6EBFGQHS4NOmYzuFHcKuU1fsqiiPkn7vs3y71OH2fL7liMqN_tM17lBfr9IquYTVLfGSXmDgY7wmJDAhvFFCi3GciznOgyrY88jzm_56YVR8Kykv9_Mr5Ql3AStP1jwvWasGn2OnXwsMTLrTFDIPJo1IifEvngnmIdOKEvw2W7xrq8-bSMY9FWAoK4Omf1OITHA11LLsyXqJLRgRWpASxiOq-bISdyOuDpKBTzzID6pI_FDtr4BDnBNY3SdfSsTMP856L8UyR9aQ9X_OmgF0-eyCjmqO0IFUOPGEekpXnMGfvgriW-zAnMZHK0XQ_6XnIvbns65wQseqIFIeF";
+                    "CfDJ8DNoxjbbLI5MpNKLIgUgqrXC_N0xX1w-sxp15GBBhNGZU63WSgzh1xu9Muv2PmfTVv9BMZjY6ksIlkZX68Ezm02AeoGCBflxNfOgr5RVA7cnje9WhXRdMiUM45dRBBpMRA7VCrvqN-2yvHl5lPrb-ZyixpD_q0QlWFLkTuchHW-Fy0HN4A0uLrW5yuj12oZxoT5o_h-oYAE9Aw9mEKQE1pz6OdPErOQePSB4X1EP42hCViHGZJy1KGx-Xcizt82NNmJocUL1G45yOXTXR1bvekvRDbCrthJpm77o7DcXI1OlvH0oLg9u6Jc-6O10GCD7CC0wT_CvjtgdnKGbDZHSE_NjAjjCtr4PdCfsnuqB33UYkBVuQqCNU14X67StgjMF-HLTHKsmhZO3s2Rx-zWqJO4kj_ONG-mCbch-dlHIuzy__dQ69W_xaas_l2bQSSWOwms7TfFFqdfiC1sg7Sqxr5ayvwLMMHVjn_nOf39yTeaii4aBa0_UrwudLsk54XKBomuGR2xFCcEERAVud0qqtDjKBPyLSh_qTNTBx9wan5Nj";
             });
 }).AllowAnonymous();
 
