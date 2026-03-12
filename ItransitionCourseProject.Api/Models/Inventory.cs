@@ -19,10 +19,10 @@ public sealed class Inventory : IAuditableEntity
     public Guid CategoryId { get; set; }
     public required Category Category { get; set; }
 
-    public IEnumerable<InventoryAccess> InventoryAccesses { get; set; } = [];
-    public IEnumerable<InventoryTag> InventoryTags { get; set; } = [];
-    public IEnumerable<Item> Items { get; set; } = [];
-    public IEnumerable<InventoryField> InventoryFields { get; set; } = [];
-    public IEnumerable<ItemFieldValue> ItemFieldValues { get; set; } = [];
-    public IEnumerable<Post> Posts { get; set; } = [];
+    public List<InventoryAccess> InventoryAccesses { get; set; } 
+    public List<InventoryTag> InventoryTags { get; set; }
+    public List<Item> Items { get; set; }
+    public List<InventoryField> InventoryFields { get; set; }
+    public List<ItemFieldValue> ItemFieldValues { get; set; } 
+    public List<Post> Posts { get; set; }
 }

@@ -16,6 +16,6 @@ public sealed class Item : IAuditableEntity
     public required string CreatorId { get; set; }
     public required AppUser Creator { get; set; }
 
-    public IEnumerable<ItemFieldValue> ItemFieldValues { get; set; } = [];
-    public IEnumerable<ItemLike> ItemLikes { get; set; } = [];
+    public List<ItemFieldValue> ItemFieldValues { get; set; } 
+    public List<ItemLike> ItemLikes { get; set; }
 }
