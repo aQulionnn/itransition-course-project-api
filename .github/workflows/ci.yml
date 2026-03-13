@@ -22,6 +22,15 @@ jobs:
         with: 
           dotnet-version: '10.x'
 
+      - name: Restore Dependencies
+        run: dotnet restore 
+        
+      - name: Build API
+        run: dotnet build --no-restore -c Release
+        
+      - name: Run Architecture Tests
+        run: dotnet test ./ItransitionCourseProject.ArchitectureTests/ItransitionCourseProject.ArchitectureTests.csproj --no-build
+
       - name: Publish API to Output Directory
         run: dotnet publish ./ItransitionCourseProject.Api/ItransitionCourseProject.Api.csproj -c Release -o build-output
 
