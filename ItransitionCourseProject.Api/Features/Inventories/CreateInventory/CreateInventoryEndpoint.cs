@@ -16,10 +16,13 @@ public class CreateInventoryEndpoint : ICarterModule
             AppDbContext db) =>
         {
             var userId = ctx.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var inventoryId = Guid.NewGuid();
+
+            var inventoryTags = await BuildTagsAsync(db, request.Tags, inventoryId);
 
             var inventory = new Inventory
             {
-                Id = Guid.NewGuid(),
+                Id = inventoryId,
                 Title = request.Title,
                 Description = request.Description,
                 ImageUrl = request.ImageUrl,
@@ -27,27 +30,34 @@ public class CreateInventoryEndpoint : ICarterModule
                 CreatorId = userId,
                 CategoryId = request.CategoryId,
                 Creator = null!,
-                Category = null!
+                Category = null!,
+                InventoryTags = inventoryTags
             };
-
-            foreach (var tagName in request.Tags)
-            {
-                var tag = await db.Tags.FirstOrDefaultAsync(t => t.Name == tagName)
-                          ?? new Tag { Id = Guid.NewGuid(), Name = tagName };
-
-                inventory.InventoryTags = inventory.InventoryTags.Append(new InventoryTag
-                {
-                    InventoryId = inventory.Id,
-                    TagId = tag.Id,
-                    Tag = tag,
-                    Inventory = null!
-                }).ToList();
-            }
 
             db.Inventories.Add(inventory);
             await db.SaveChangesAsync();
 
             return Results.Created($"/api/inventories/{inventory.Id}", inventory.Id);
-        }).WithTags("Inventories");
+        }).RequireAuthorization().WithTags("Inventories");
+    }
+
+    private static async Task<List<InventoryTag>> BuildTagsAsync(
+        AppDbContext db, IEnumerable<string> tagNames, Guid inventoryId)
+    {
+        var tags = new List<InventoryTag>();
+        foreach (var name in tagNames)
+        {
+            var tag = await db.Tags.FirstOrDefaultAsync(t => t.Name == name)
+                      ?? new Tag { Id = Guid.NewGuid(), Name = name };
+
+            tags.Add(new InventoryTag
+            {
+                InventoryId = inventoryId,
+                TagId = tag.Id,
+                Tag = tag,
+                Inventory = null!
+            });
+        }
+        return tags;
     }
 }

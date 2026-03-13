@@ -24,5 +24,6 @@ public sealed class Inventory : IAuditableEntity
     public List<Item> Items { get; set; }
     public List<InventoryField> InventoryFields { get; set; }
     public List<ItemFieldValue> ItemFieldValues { get; set; } 
+    public List<InventoryIdFormat> InventoryIdFormats { get; set; }
     public List<Post> Posts { get; set; }
 }

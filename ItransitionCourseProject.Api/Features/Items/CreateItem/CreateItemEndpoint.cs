@@ -35,10 +35,13 @@ public class CreateItemEndpoint : ICarterModule
 
             if (!hasAccess) return Results.Forbid();
 
-            var duplicate = await db.Items.AnyAsync(i =>
-                i.InventoryId == inventoryId && i.CustomId == request.CustomId);
+            var customId = await GenerateCustomIdAsync(db, inventoryId);
 
-            if (duplicate) return Results.Conflict("Custom ID already exists in this inventory.");
+            var duplicate = await db.Items.AnyAsync(i =>
+                i.InventoryId == inventoryId && i.CustomId == customId);
+
+            if (duplicate)
+                return Results.Conflict("Generated Custom ID already exists. Please try again.");
 
             var itemId = Guid.NewGuid();
 
@@ -55,7 +58,7 @@ public class CreateItemEndpoint : ICarterModule
             var item = new Item
             {
                 Id = itemId,
-                CustomId = request.CustomId,
+                CustomId = customId,
                 InventoryId = inventoryId,
                 CreatorId = userId,
                 CreatedOnUtc = DateTime.UtcNow,
@@ -67,14 +70,54 @@ public class CreateItemEndpoint : ICarterModule
             db.Items.Add(item);
             await db.SaveChangesAsync();
 
-            return Results.Created($"/api/inventories/{inventoryId}/items/{item.Id}", item.Id);
+            return Results.Created($"/api/inventories/{inventoryId}/items/{item.Id}",
+                new { id = item.Id, customId });
         }).RequireAuthorization().WithTags("Items");
     }
+
+    private static async Task<string> GenerateCustomIdAsync(AppDbContext db, Guid inventoryId)
+    {
+        var format = await db.InventoryIdFormats
+            .AsNoTracking()
+            .Include(f => f.Elements)
+            .FirstOrDefaultAsync(f => f.InventoryId == inventoryId);
+
+        if (format is null || format.Elements.Count == 0)
+            return Guid.NewGuid().ToString("N")[..8].ToUpper();
+
+        var parts = new List<string>();
+        foreach (var el in format.Elements.OrderBy(e => e.Order))
+            parts.Add(await ResolveElementAsync(el, db, inventoryId));
+
+        return string.Concat(parts);
+    }
+
+    private static async Task<string> ResolveElementAsync(
+        InventoryIdElement el, AppDbContext db, Guid inventoryId)
+    {
+        if (el.Type == ElementType.Sequence)
+        {
+            var count = await db.Items.CountAsync(i => i.InventoryId == inventoryId);
+            return (count + 1).ToString();
+        }
+        return ResolveStaticElement(el);
+    }
+
+    private static string ResolveStaticElement(InventoryIdElement el) => el.Type switch
+    {
+        ElementType.FixedText => el.Text ?? string.Empty,
+        ElementType.Random20Bit => ApplyPadding(Random.Shared.Next(0, 1048576).ToString(), el.Padding),
+        ElementType.Random32Bit => ApplyPadding(Random.Shared.Next(0, int.MaxValue).ToString(), el.Padding),
+        ElementType.Random6Digit => ApplyPadding(Random.Shared.Next(0, 1000000).ToString(), el.Padding > 0 ? el.Padding : 6),
+        ElementType.Random9Digit => ApplyPadding(Random.Shared.Next(0, 1000000000).ToString(), el.Padding > 0 ? el.Padding : 9),
+        ElementType.Guid => Guid.NewGuid().ToString("N").ToUpper(),
+        ElementType.DateTime => DateTime.UtcNow.ToString(el.DateFormat ?? "yyyyMMdd"),
+        _ => string.Empty
+    };
+
+    private static string ApplyPadding(string value, int padding) =>
+        padding > 0 ? value.PadLeft(padding, '0') : value;
 }
 
-public record CreateItemRequest(
-    string CustomId,
-    List<FieldValueRequest> FieldValues
-);
-
+public record CreateItemRequest(List<FieldValueRequest> FieldValues);
 public record FieldValueRequest(Guid FieldId, string Value);

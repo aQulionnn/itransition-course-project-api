@@ -5,5 +5,5 @@ public sealed class Tag
     public Guid Id { get; set; }
     public required string Name { get; set; }
 
-    public IEnumerable<InventoryTag> InventoryTags { get; set; } = [];
+    public ICollection<InventoryTag> InventoryTags { get; set; } = [];
 }

@@ -16,6 +16,8 @@ public class AppDbContext(DbContextOptions options)
     public DbSet<Item> Items { get; set; }
     public DbSet<InventoryField> InventoryFields { get; set; }
     public DbSet<ItemFieldValue> ItemFieldValues { get; set; }
+    public DbSet<InventoryIdFormat> InventoryIdFormats { get; set; }
+    public DbSet<InventoryIdElement> InventoryIdElements { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<ItemLike> ItemLikes { get; set; }
     
