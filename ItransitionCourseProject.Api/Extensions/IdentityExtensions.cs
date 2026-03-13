@@ -8,7 +8,7 @@ public static class IdentityExtensions
 {
     public static IServiceCollection AddApiIdentity(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<AppUser, IdentityRole>(options =>
+        services.AddIdentityCore<AppUser>(options =>
             {
                 options.User.RequireUniqueEmail = true;
 
@@ -20,6 +20,7 @@ public static class IdentityExtensions
                     options.Password.RequiredLength = 1;
                 }
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
