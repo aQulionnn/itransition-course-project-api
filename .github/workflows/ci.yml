@@ -29,7 +29,7 @@ jobs:
         run: dotnet build --no-restore -c Release
         
       - name: Run Architecture Tests
-        run: dotnet test ./ItransitionCourseProject.ArchitectureTests/ItransitionCourseProject.ArchitectureTests.csproj --no-build
+        run: dotnet test ./ItransitionCourseProject.ArchitectureTests/ItransitionCourseProject.ArchitectureTests.csproj --configuration Release --no-restore --no-build
 
       - name: Publish API to Output Directory
         run: dotnet publish ./ItransitionCourseProject.Api/ItransitionCourseProject.Api.csproj -c Release -o build-output
