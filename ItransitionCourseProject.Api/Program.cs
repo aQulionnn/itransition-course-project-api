@@ -87,7 +87,7 @@ app.MapScalarApiReference("/scalar", options =>
         .AddAuthorizationCodeFlow(BearerTokenDefaults.AuthenticationScheme,
             flow =>
             {
-                flow.Token = "";
+                flow.Token = "CfDJ8DNoxjbbLI5MpNKLIgUgqrWgwbTOSO2IX95_JSwNjMvtbzB_JCVDhbsbZL6DjWcQg716lJ5ilAMUmXvny7DXkoizX-RKXlAfaIECKFJYZJoBAhiOWyvb6I5ovE2AKTkuyY6vpkrflA-8t6TsqI6TjSJ42YAIP0gQgjfVfrOdzF0OH-U5B4-Be1dR0wZ2mtJVVCL2HHIWwsb640Ha8ZjD-m0ubjaEW3QakRSp3eXbSL8Y3fQITQoGMg_PT6oQHIH_lydI5E7ObNZSJdwYlL-pR2LR7knXSvjre_G_PNeH9cE5F2nD3zuDq_wbDQA6hYGKkGcOy_aVOqGu51fDFVMzZalLtsZrkv-nKfHUe61F7q8uorzJZmyPAT2a-GeMxE_ure9gN1T8IHAKfcvpZS9rPdwDSb8HIhgXStKknz9xB0VxysofjEJB6Loh5PNH_cVVor7CrfP_bulsW_Posr8xoRdX4qM068l2ZH16I4vqdzgKHhRLzTI6WF5PqQKiq8GGzOIQ7hKojsMAz5S3aM-D5ioXCmiar63E4bi1S35vQzxXznKeRwF-ttWbVns1KgclEghIfnJXUzm5coAlj5VBHqQfRGUNd112KtqsLjGmjIJGwUmeHH0gfWz1Qt9UPPt0jRGF0CcaHzJbQ8EYi3EliSw";
             });
 }).AllowAnonymous();
 

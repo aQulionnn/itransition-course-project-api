@@ -27,7 +27,10 @@ public static class AuthExtensions
                 {
                     options.DefaultAuthenticateScheme = BearerTokenDefaults.AuthenticationScheme;
                 })
-                .AddBearerToken();
+                .AddBearerToken(options =>
+                {
+                    options.BearerTokenExpiration = TimeSpan.FromDays(7);
+                });
         }
 
 
