@@ -2,6 +2,7 @@ using Azure.Identity;
 using Carter;
 using DotNetEnv;
 using ItransitionCourseProject.Api.Extensions;
+using ItransitionCourseProject.Api.Features.Salesforce.CreateContact;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Azure;
@@ -27,6 +28,8 @@ builder.Services.AddAzureClients(clientBuilder =>
 {
     clientBuilder.AddBlobServiceClient(builder.Configuration.GetConnectionString("BlobStorage"));
 });
+
+builder.Services.AddHttpClient<CreateSalesforceContactCommandHandler>();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -87,7 +90,7 @@ app.MapScalarApiReference("/scalar", options =>
         .AddAuthorizationCodeFlow(BearerTokenDefaults.AuthenticationScheme,
             flow =>
             {
-                flow.Token = "CfDJ8DNoxjbbLI5MpNKLIgUgqrWgwbTOSO2IX95_JSwNjMvtbzB_JCVDhbsbZL6DjWcQg716lJ5ilAMUmXvny7DXkoizX-RKXlAfaIECKFJYZJoBAhiOWyvb6I5ovE2AKTkuyY6vpkrflA-8t6TsqI6TjSJ42YAIP0gQgjfVfrOdzF0OH-U5B4-Be1dR0wZ2mtJVVCL2HHIWwsb640Ha8ZjD-m0ubjaEW3QakRSp3eXbSL8Y3fQITQoGMg_PT6oQHIH_lydI5E7ObNZSJdwYlL-pR2LR7knXSvjre_G_PNeH9cE5F2nD3zuDq_wbDQA6hYGKkGcOy_aVOqGu51fDFVMzZalLtsZrkv-nKfHUe61F7q8uorzJZmyPAT2a-GeMxE_ure9gN1T8IHAKfcvpZS9rPdwDSb8HIhgXStKknz9xB0VxysofjEJB6Loh5PNH_cVVor7CrfP_bulsW_Posr8xoRdX4qM068l2ZH16I4vqdzgKHhRLzTI6WF5PqQKiq8GGzOIQ7hKojsMAz5S3aM-D5ioXCmiar63E4bi1S35vQzxXznKeRwF-ttWbVns1KgclEghIfnJXUzm5coAlj5VBHqQfRGUNd112KtqsLjGmjIJGwUmeHH0gfWz1Qt9UPPt0jRGF0CcaHzJbQ8EYi3EliSw";
+                flow.Token = "CfDJ8DNoxjbbLI5MpNKLIgUgqrV6R_861DaACEuyX3-trGz2m8uncYDjivuHeBasI-FKiMYRy0uJxWsO4M7O6-jdXDkkGxXIcvP0Z1wV9k_EAW8ejOEn49_HbOkFEGRskVdxW-ZqAUniChMy9_W1VqnLIVu3Jn9zvYhd4MY2ogVhvY83qNgx9tRuaMilaOzAROJ3tgU82DNxWQHcS4bUfJSrvLO6SFiYRD1ipkCTlIIc5B0kJsAyrcY22sOmyko46rr7sD9eMviD5uPGwGgJ6OmfPbGNHsSaciXUmXL7bO7zrLMsib08au_P8yBppa02v8gK6AUXDc57vUOvkuuKRQBTc6sKc1G0uUYVDss4c4mpKoQnDAk3Aw4oHLGGymRRenN2VPk0ZqC-iwEWhb_uHRpNLJrwGLaAF_UVprGu2M4lNpX-3_C263Ac1YctQZW228XsGon3ztw_IJvZTxuU7aJv_yPXOxhaHskbPQ-mC402lIz2jNtRuOD9uQuOS_2B6okn0dcOA8hJasIOcqPAgjqwSnA9FfZqjhhg8X1EE08Px5Y_dLyPoTn26tM7W8Zm1n58EF_nJZx5QmyoNliAiDyj36cRkyLWbYnhX7Oxw8OZPVUZE-NO0ytpYI0gDvgjH2SdBfuUx9EsMOwXFK6_TzRvapk";
             });
 }).AllowAnonymous();
 
